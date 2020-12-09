@@ -20,8 +20,7 @@ class Enemy {
     if(boss) img = loadImage("./data/boss.png");
   }
   void update(Character player){
-    if(hp <= maxhp/2 && speed == maxspeed) speed*=0.5;
-    if(hp <= maxhp/4 && speed == maxspeed/2) speed*=0.5;
+    if(hp < maxhp && !boss) speed=maxspeed/(maxhp/hp);
     double angle = Direction.calcAngle(x, y, width/2, height/2);
     if(target != null) angle = Direction.calcAngle(x, y, target.x, target.y);
     if(!player.hidden) angle = Direction.calcAngle(x, y, player.x, player.y);
