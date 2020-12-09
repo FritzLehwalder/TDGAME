@@ -1,4 +1,4 @@
-//powerups, lasergun turret, electric tesla turret (arcs between enemies), gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
+//powerups, gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
 ArrayList<Ray> rays;
 ArrayList<Turret> turrets;
 ArrayList<Enemy> enemies;
@@ -50,7 +50,7 @@ void setup() {
   size(1000, 1000);
   noStroke();
   EnemyTimer.start();
-  respawn = new Button(width/2, (height/5)*4, 380, 50, 15, "Respawn? $1000", 40, "test");
+  respawn = new Button(width/2, (height/5)*4, 380, 50, 15, "Respawn? $1000", 40);
   menu = new Menu();
   respawnCost = 1000;
   noCursor();
@@ -135,18 +135,20 @@ void draw() {
         turret.update();
         if (turret.ready && enemies.size() >= 1) {
           Enemy target = enemies.get((int)random(0, enemies.size()));
-          if (turret.dmg == 10) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x+random(-50, 50), turret.enemy.y+random(-50, 50)), 10, turret.dmg));
-          } else if (turret.dmg == 100) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, target.y), 20, turret.dmg));
-          } else if (turret.dmg == 25) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg));
+          if (turret.type.equals("turretEasy")) {
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x+random(-50, 50), turret.enemy.y+random(-50, 50)), 10, turret.dmg, "normal"));
+          } else if (turret.type.equals("turretHard")) {
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, target.y), 20, turret.dmg, "normal"));
+          } else if (turret.type.equals("turretShotgun")) {
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
             target = enemies.get((int)random(0, enemies.size()));
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg));
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
             target = enemies.get((int)random(0, enemies.size()));
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg));
-          } else {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg));
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
+          } else if(turret.type.equals("turretMachine")) {
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "normal"));
+          } else if(turret.type.equals("tesla")) {
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "tesla"));
           }
           turret.ready = false;
           turret.fireTimer.start();
@@ -159,11 +161,10 @@ void draw() {
     }
     if (enemies.size() >= 1) for (int i = 0; i < enemies.size(); i++) { 
       Enemy enemy = enemies.get(i);
-      println(BossShotTimer.isFinished());
       if (enemy.boss && BossShotTimer.isFinished() && !player.hidden) {
-        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x, player.y), 10, 5));
-        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x+player.x/10, player.y+player.y/10), 10, 5));
-        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x-player.x/10, player.y-player.y/10), 10, 5));
+        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x, player.y), 10, 5, "boss"));
+        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x+player.x/10, player.y+player.y/10), 10, 5, "boss"));
+        rays.add(new Ray(enemy.x, enemy.y, Direction.calcAngle(enemy.x, enemy.y, player.x-player.x/10, player.y-player.y/10), 10, 5, "boss"));
         BossShotTimer.start();
       }
       Turret closest = null;
@@ -411,16 +412,16 @@ void draw() {
         if (menu.x>turret.x-25 && menu.x<turret.x+50 && menu.y>turret.y-50 && menu.y<turret.y+50) valid = false;
       }
       if (menu.queue == "turretEasy" && money >= 500 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 50));
+        turrets.add(new Turret(menu.x, menu.y, 50,menu.queue));
         money-=500;
       } else if (menu.queue == "turretHard" && money >= 1000 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 100));
+        turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
         money-=1000;
       } else if (menu.queue == "turretShotgun" && money >= 750 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 25));
+        turrets.add(new Turret(menu.x, menu.y, 25, menu.queue));
         money-=750;
       } else if (menu.queue == "turretMachine" && money >= 750 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 10));
+        turrets.add(new Turret(menu.x, menu.y, 10, menu.queue));
         money-=750;
       } else if (menu.queue == "trap" && money >= 150 && valid) {
         traps.add(new Trap(menu.x, menu.y, 5, 2400));
@@ -428,7 +429,15 @@ void draw() {
       } else if (menu.queue == "shield" && money >= 1000 && player.shield < 100) {
         money-=1000;
         player.shield = 100;
-      }
+      } else if (menu.queue == "tesla" && money >= 1000) {
+        turrets.add(new Turret(menu.x, menu.y, 20, menu.queue));
+      } else if (menu.queue == "laser" && money >= 2000) {
+        turrets.add(new Turret(menu.x, menu.y, 400, menu.queue));
+      } else if (menu.queue == "bomb" && money >= 2000) {
+        turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
+      } 
+      println(turrets.size());
+      println(menu.queue);
       menu.queue = null;
     }
     fill(255);
@@ -470,7 +479,7 @@ void keyPressed() {
   activeKey = keyCode;
   switch(keyCode) {
   case 32: //space
-    rays.add(new Ray(player.x, player.y, Direction.calcAngle(player.x, player.y, mouseX, mouseY), 10, 50));
+    rays.add(new Ray(player.x, player.y, Direction.calcAngle(player.x, player.y, mouseX, mouseY), 10, 50, "player"));
     break;
   case 87: //w
     if (!player.hidden && !paused) {
@@ -598,8 +607,9 @@ void mousePressed() {
   } else {
     if (menu.active && mouseButton == LEFT) {
       menu.click = true;
+      println(menu.click);
     } else if (mouseButton == LEFT && player.readyToFire) {
-      rays.add(new Ray(player.x, player.y, Direction.calcAngle(player.x, player.y, mouseX, mouseY), 10, player.damage));
+      rays.add(new Ray(player.x, player.y, Direction.calcAngle(player.x, player.y, mouseX, mouseY), 10, player.damage, "player"));
       player.readyToFire = false;
       player.fireTimer.start();
     }

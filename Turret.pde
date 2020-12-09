@@ -4,11 +4,13 @@ class Turret {
   Timer fireTimer;
   PImage turretimg;
   boolean hidden, ready;
+  String type;
   Enemy enemy;
   class Type {
     
   }
-  Turret(float x, float y, int dmg) {
+  Turret(float x, float y, int dmg, String type) {
+    this.type = type;
     fireTimer = new Timer(1000);
     this.x = x;
     this.y = y;
@@ -16,15 +18,20 @@ class Turret {
     h = 50;
     this.dmg = dmg;
     hp = 1000;
-    if(dmg == 100) hp = 2000;
     maxhp = hp;
-    if (dmg == 50) turretimg = loadImage("./data/turret.png");
-    if (dmg == 100) turretimg = loadImage("./data/turretHard.png");
-    if (dmg == 25) turretimg = loadImage("./data/turretShotgun.png");
-    if (dmg == 10) {
+    if (type.equals("turretEasy")) turretimg = loadImage("./data/turret.png");
+    if (type.equals("turretHard")){
+      turretimg = loadImage("./data/turretHard.png");
+      hp = 2000;
+    }
+    if (type.equals("turretShotgun")) turretimg = loadImage("./data/turretShotgun.png");
+    if (type.equals("turretMachine")) {
       fireTimer.totalTime = 150;
       turretimg = loadImage("./data/turretMachine.png");
     }
+    if(type.equals("tesla")) turretimg = loadImage("./data/tesla.png");
+    if(type.equals("laser")) turretimg = loadImage("./data/laser.png");
+    if(type.equals("bomb")) turretimg = loadImage("./data/bomb.png");
   }
   void update() {
     if (fireTimer.isFinished()) {

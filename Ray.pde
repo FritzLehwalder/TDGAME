@@ -6,8 +6,10 @@ class Ray {
   Boolean hidden;
   Boolean tracking;
   Boolean purge;
+  String type;
   Enemy tracked;
-  Ray(float x, float y, double angle, float speed, int dmg){
+  Ray(float x, float y, double angle, float speed, int dmg, String type){
+    this.type = type;
     this.x = x;
     this.y = y;
     this.angle = angle;
@@ -15,8 +17,9 @@ class Ray {
     tracking = false;
     tracked = null;
     this.dmg = dmg;
-    bullet = loadImage("./data/bullet.png");
-    if(dmg <= 5) bullet = loadImage("./data/enemyBullet.png");
+    if(type.equals("normal") || type.equals("player")) bullet = loadImage("./data/bullet.png");
+    if(type.equals("tesla")) bullet = loadImage("./data/teslaRay.png");
+    if(type.equals("boss")) bullet = loadImage("./data/enemyBullet.png");
     hidden = false;
     purge = false;
   }
