@@ -1,4 +1,4 @@
-//powerups, gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
+//powerups,boss takes damage from own bullets, gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
 ArrayList<Ray> rays;
 ArrayList<Turret> turrets;
 ArrayList<Enemy> enemies;
@@ -7,6 +7,7 @@ Timer EnemyTimer;
 Timer LevelTimer;
 Timer PrepTimer;
 Timer BossShotTimer;
+int enemyId;
 int level;
 int startingHP;
 int totalEnemies;
@@ -30,6 +31,7 @@ int activeKey;
 Boolean paused;
 boolean a;
 void setup() {
+  enemyId = 0;
   instaKill = false;
   money = 0;
   rays = new ArrayList<Ray>();
@@ -62,9 +64,9 @@ void setup() {
 }
 void draw() {
   imageMode(CENTER);
-  if(enemies.size() >= 500){
-    for(int i = 0; i < enemies.size()+500; i++){
-      if(enemies.get(i+500) != null) enemies.remove(i+500);
+  if (enemies.size() >= 500) {
+    for (int i = 0; i < enemies.size()+500; i++) {
+      if (enemies.get(i+500) != null) enemies.remove(i+500);
     }
   }
   image(background, width/2, height/2);
@@ -76,16 +78,40 @@ void draw() {
         if (player.checkRay(ray) && !player.hidden) rays.remove(ray);
       }
       ray.update();
-      if (ray.purge) rays.remove(i);
+      if (ray.purge) {
+        rays.remove(i);
+      }
+      Enemy closest = null;
+      int closestId = 0;
       if (enemies.size() >= 1) {
+        closest = enemies.get((int)random(0, enemies.size()));
         int temptarget = (int)random(0, enemies.size());
         Enemy target = enemies.get(temptarget);
         if (turretTracking && ray.tracked == null) ray.track(target);
       }
       if (enemies.size() >= 1) for (int j = 0; j < enemies.size(); j++) { 
         Enemy enemy = enemies.get(j);
-        if (ray.dmg > 5) if (enemy.checkRay(ray) && i < rays.size() && !enemy.boss) {
-          rays.remove(i);
+        if (dist(ray.x, ray.y, enemy.x, enemy.y) > dist(ray.x, ray.y, closest.x, closest.y) && closest.id != enemy.id){
+          closest = enemies.get(j);
+          closestId = j;
+        }
+      }
+      if (enemies.size() >= 1) for (int j = 0; j < enemies.size(); j++) { 
+        Enemy enemy = enemies.get(j);
+        if (enemy.checkRay(ray, ray.noDmg) && i < rays.size() && !enemy.boss) {
+          if (ray.type != "tesla") {
+            rays.remove(i);
+          } else {
+            if(enemies.get(closestId) != null) closest = enemies.get(closestId);
+            ray.noDmg = true; //<>//
+            if (ray.teslaCount == 4) rays.remove(i); //<>//
+            ray.teslaCount+=1; //<>//
+            ray.newTarget(closest.x, closest.y); //<>// //<>// //<>// //<>// //<>//
+            println(ray.x,ray.y);
+            println(closest.x,closest.y);
+            if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
+            if(enemies.size() == 0) rays.remove(i);
+          }
           if (instaKill) {
             enemies.remove(j);
             money+=50;
@@ -145,10 +171,12 @@ void draw() {
             rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
             target = enemies.get((int)random(0, enemies.size()));
             rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
-          } else if(turret.type.equals("turretMachine")) {
+          } else if (turret.type.equals("turretMachine")) {
             rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "normal"));
-          } else if(turret.type.equals("tesla")) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "tesla"));
+          } else if (turret.type.equals("tesla")) {
+            Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 25, turret.dmg, "tesla");
+            rays.add(ray);
+            ray = rays.get(rays.indexOf(ray));
           }
           turret.ready = false;
           turret.fireTimer.start();
@@ -412,7 +440,7 @@ void draw() {
         if (menu.x>turret.x-25 && menu.x<turret.x+50 && menu.y>turret.y-50 && menu.y<turret.y+50) valid = false;
       }
       if (menu.queue == "turretEasy" && money >= 500 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 50,menu.queue));
+        turrets.add(new Turret(menu.x, menu.y, 50, menu.queue));
         money-=500;
       } else if (menu.queue == "turretHard" && money >= 1000 && valid) {
         turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
@@ -430,14 +458,12 @@ void draw() {
         money-=1000;
         player.shield = 100;
       } else if (menu.queue == "tesla" && money >= 1000) {
-        turrets.add(new Turret(menu.x, menu.y, 20, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y, 80, menu.queue));
       } else if (menu.queue == "laser" && money >= 2000) {
         turrets.add(new Turret(menu.x, menu.y, 400, menu.queue));
       } else if (menu.queue == "bomb" && money >= 2000) {
         turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
-      } 
-      println(turrets.size());
-      println(menu.queue);
+      }
       menu.queue = null;
     }
     fill(255);

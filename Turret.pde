@@ -29,9 +29,18 @@ class Turret {
       fireTimer.totalTime = 150;
       turretimg = loadImage("./data/turretMachine.png");
     }
-    if(type.equals("tesla")) turretimg = loadImage("./data/tesla.png");
-    if(type.equals("laser")) turretimg = loadImage("./data/laser.png");
-    if(type.equals("bomb")) turretimg = loadImage("./data/bomb.png");
+    if(type.equals("tesla")){
+      turretimg = loadImage("./data/tesla.png");
+      fireTimer.totalTime = 2000;
+    }
+    if(type.equals("laser")){
+      turretimg = loadImage("./data/laser.png");
+      fireTimer.totalTime = 10500;
+    }
+    if(type.equals("bomb")){ // stun movement around bomb crater
+      turretimg = loadImage("./data/bomb.png");
+      fireTimer.totalTime = 10500;
+    }
   }
   void update() {
     if (fireTimer.isFinished()) {

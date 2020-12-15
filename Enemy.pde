@@ -1,5 +1,5 @@
 class Enemy {
-  float x,y,w,h,speed;
+  float x,y,w,h,speed, id;
   float maxhp;
   float maxspeed;
   int hp;
@@ -7,6 +7,8 @@ class Enemy {
   Turret target;
   Boolean boss;
   Enemy(float x, float y, int hp, float speed, boolean boss){
+    id = enemyId;
+    enemyId+=1;
     this.x = x;
     this.y = y;
     w = 50;
@@ -42,8 +44,8 @@ class Enemy {
     fill(255);
     if(hp > 0) text(hp, x, y+h/2+14, 5);
   }
-  Boolean checkRay(Ray bullet){
-    if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) hp-=bullet.dmg;
+  Boolean checkRay(Ray bullet, Boolean canceler){
+    if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler) hp-=bullet.dmg;
     return bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2;
   }
   Boolean checkTrap(Trap bullet){
