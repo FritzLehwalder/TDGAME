@@ -1,4 +1,4 @@
-//powerups,boss takes damage from own bullets, gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
+
 ArrayList<Ray> rays;
 ArrayList<Turret> turrets;
 ArrayList<Enemy> enemies;
