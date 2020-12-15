@@ -45,7 +45,7 @@ class Enemy {
     if(hp > 0) text(hp, x, y+h/2+14, 5);
   }
   Boolean checkRay(Ray bullet, Boolean canceler){
-    if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler) hp-=bullet.dmg;
+    if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler && !ray.type.equals("boss")) hp-=bullet.dmg;
     return bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2;
   }
   Boolean checkTrap(Trap bullet){
