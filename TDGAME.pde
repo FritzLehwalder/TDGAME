@@ -27,6 +27,7 @@ PImage cursMenu;
 Boolean prep;
 Boolean spawn;
 Boolean temp2;
+Boolean disableOverlapping;
 int activeKey;
 Boolean paused;
 boolean a;
@@ -61,6 +62,7 @@ void setup() {
   temp2 = false;
   paused = false;
   a = false;
+  disableOverlapping = false;
 }
 void draw() {
   imageMode(CENTER);
@@ -106,7 +108,8 @@ void draw() {
             ray.noDmg = true; //<>//
             if (ray.teslaCount == 4) rays.remove(i); //<>//
             ray.teslaCount+=1; //<>//
-            ray.newTarget(closest.x, closest.y); //<>// //<>// //<>// //<>// //<>//
+            ray.newTarget(closest.x, closest.y); //<>//
+            if(enemies.size() <= 0) rays.remove(i);
             println(ray.x,ray.y);
             println(closest.x,closest.y);
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
@@ -162,7 +165,7 @@ void draw() {
         if (turret.ready && enemies.size() >= 1) {
           Enemy target = enemies.get((int)random(0, enemies.size()));
           if (turret.type.equals("turretEasy")) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x+random(-50, 50), turret.enemy.y+random(-50, 50)), 10, turret.dmg, "normal"));
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "normal"));
           } else if (turret.type.equals("turretHard")) {
             rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, target.y), 20, turret.dmg, "normal"));
           } else if (turret.type.equals("turretShotgun")) {
@@ -172,7 +175,7 @@ void draw() {
             target = enemies.get((int)random(0, enemies.size()));
             rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, target.x, target.y), 10, turret.dmg, "normal"));
           } else if (turret.type.equals("turretMachine")) {
-            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 10, turret.dmg, "normal"));
+            rays.add(new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x+random(-50, 50), turret.enemy.y+random(-50, 50)), 10, turret.dmg, "normal"));
           } else if (turret.type.equals("tesla")) {
             Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 25, turret.dmg, "tesla");
             rays.add(ray);
@@ -433,36 +436,37 @@ void draw() {
       boolean valid = true;
       if (turrets.size() >= 1) for (int i = 0; i < turrets.size(); i++) {
         Turret turret = turrets.get(i);
-        if (menu.x>turret.x-50 && menu.x<turret.x+50 && menu.y>turret.y-50 && menu.y<turret.y+50) valid = false;
+        if (menu.x>turret.x-50 && menu.x<turret.x+50 && menu.y+120>turret.y-50 && menu.y+120<turret.y+50) valid = false;
       }
       if (traps.size() >= 1) for (int i = 0; i < traps.size(); i++) {
         Trap turret = traps.get(i);
-        if (menu.x>turret.x-25 && menu.x<turret.x+50 && menu.y>turret.y-50 && menu.y<turret.y+50) valid = false;
+        if (menu.x>turret.x-25 && menu.x<turret.x+50 && menu.y+120>turret.y-50 && menu.y+120<turret.y+50) valid = false;
       }
+      if(disableOverlapping) valid = true;
       if (menu.queue == "turretEasy" && money >= 500 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 50, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 50, menu.queue));
         money-=500;
       } else if (menu.queue == "turretHard" && money >= 1000 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 100, menu.queue));
         money-=1000;
       } else if (menu.queue == "turretShotgun" && money >= 750 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 25, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 25, menu.queue));
         money-=750;
       } else if (menu.queue == "turretMachine" && money >= 750 && valid) {
-        turrets.add(new Turret(menu.x, menu.y, 10, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 10, menu.queue));
         money-=750;
       } else if (menu.queue == "trap" && money >= 150 && valid) {
-        traps.add(new Trap(menu.x, menu.y, 5, 2400));
+        traps.add(new Trap(menu.x, menu.y+120, 5, 2400));
         money-=150;
       } else if (menu.queue == "shield" && money >= 1000 && player.shield < 100) {
         money-=1000;
         player.shield = 100;
       } else if (menu.queue == "tesla" && money >= 1000) {
-        turrets.add(new Turret(menu.x, menu.y, 80, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 80, menu.queue));
       } else if (menu.queue == "laser" && money >= 2000) {
-        turrets.add(new Turret(menu.x, menu.y, 400, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 400, menu.queue));
       } else if (menu.queue == "bomb" && money >= 2000) {
-        turrets.add(new Turret(menu.x, menu.y, 100, menu.queue));
+        turrets.add(new Turret(menu.x, menu.y+120, 100, menu.queue));
       }
       menu.queue = null;
     }
@@ -499,6 +503,9 @@ void draw() {
       Enemy enemy = enemies.get(i);
       enemy.display();
     }
+  }
+  if(disableOverlapping){
+    text("disableOverlapping", width/2, 50);
   }
 }
 void keyPressed() {
@@ -585,11 +592,7 @@ void keyPressed() {
     }
     break;
   case 85: //u
-    if (!turretTracking) {
-      turretTracking = true;
-    } else {
-      turretTracking = false;
-    }
+    disableOverlapping = !disableOverlapping;
     break;
   case 80: //p
     paused = !paused;

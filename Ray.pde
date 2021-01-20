@@ -22,7 +22,7 @@ class Ray {
     if(type.equals("normal") || type.equals("player")) bullet = loadImage("./data/bullet.png");
     if(type.equals("tesla")){
       bullet = loadImage("./data/teslaRay.png");
-      bullet.resize(20,20);d
+      bullet.resize(20,20);
     }
     if(type.equals("boss")) bullet = loadImage("./data/enemyBullet.png");
     hidden = false;
