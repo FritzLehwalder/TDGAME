@@ -516,6 +516,9 @@ void draw() {
   if(disableOverlapping){
     text("disableOverlapping", width/2, 50);
   }
+  if(invincible){
+    text("invincible", width/2, 30);
+  }
 }
 void keyPressed() {
   activeKey = keyCode;
