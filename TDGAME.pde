@@ -101,9 +101,7 @@ void draw() {
       if (enemies.size() >= 1) for (int j = 0; j < enemies.size(); j++) { 
         Enemy enemy = enemies.get(j);
         if (enemy.checkRay(ray, ray.noDmg) && i < rays.size() && !enemy.boss) {
-          if (ray.type != "tesla") {
-            rays.remove(i);
-          } else {
+          if(ray.type.equals("tesla")) {
             if(enemies.get(closestId) != null) closest = enemies.get(closestId);
             ray.noDmg = true; //<>//
             if (ray.teslaCount == 4) rays.remove(i); //<>//
@@ -115,6 +113,9 @@ void draw() {
             println(closest.x,closest.y);
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
             if(enemies.size() == 0) rays.remove(i);
+          } else if(ray.type.equals("laser")){
+          } else {
+            rays.remove(i);
           }
           if (instaKill) {
             enemies.remove(j);
@@ -181,6 +182,9 @@ void draw() {
             Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 25, turret.dmg, "tesla");
             rays.add(ray);
             ray = rays.get(rays.indexOf(ray));
+          } else if (turret.type.equals("laser")) {
+            Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 20, turret.dmg, "laser");
+            rays.add(ray);
           }
           turret.ready = false;
           turret.fireTimer.start();
@@ -463,12 +467,15 @@ void draw() {
       } else if (menu.queue == "shield" && money >= 1000 && player.shield < 100) {
         money-=1000;
         player.shield = 100;
-      } else if (menu.queue == "tesla" && money >= 1000) {
+      } else if (menu.queue == "tesla" && money >= 1000 && valid) {
         turrets.add(new Turret(menu.x, menu.y+120, 80, menu.queue));
-      } else if (menu.queue == "laser" && money >= 2000) {
-        turrets.add(new Turret(menu.x, menu.y+120, 400, menu.queue));
-      } else if (menu.queue == "bomb" && money >= 2000) {
+        money-=1000;
+      } else if (menu.queue == "laser" && money >= 2500 && valid) {
+        turrets.add(new Turret(menu.x, menu.y+120, 9999, menu.queue));
+        money-=2500;
+      } else if (menu.queue == "bomb" && money >= 2000 && valid) {
         turrets.add(new Turret(menu.x, menu.y+120, 100, menu.queue));
+        money-=2000;
       }
       menu.queue = null;
     }

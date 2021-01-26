@@ -25,7 +25,7 @@ class Menu {
     trap = new Button(x,y,80,50,15,"Spiked Trap\n$150",10);
     wall = new Button(x,y,80,50,15,"Player Shield\n$1000",10);
     tesla = new Button(x,y,80,50,15,"Tesla\n$1000",10);
-    laser = new Button(x,y,80,50,15,"Laser\n$2000",10);
+    laser = new Button(x,y,80,50,15,"Laser\n$2500",10);
     bomb = new Button(x,y,80,50,15,"Bomb\n$2000",10);
     back = new Button(x,y,50,30,15,"<",10);
     next = new Button(x,y,50,30,15,">",10);

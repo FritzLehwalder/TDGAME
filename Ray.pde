@@ -24,6 +24,10 @@ class Ray {
       bullet = loadImage("./data/teslaRay.png");
       bullet.resize(20,20);
     }
+    if(type.equals("laser")){
+      bullet = loadImage("./data/laserRay.png");
+      bullet.resize(100,100);
+    }
     if(type.equals("boss")) bullet = loadImage("./data/enemyBullet.png");
     hidden = false;
     purge = false;
