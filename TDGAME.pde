@@ -110,6 +110,7 @@ void draw() {
             ray.teslaCount+=1; //<>//
             ray.newTarget(closest.x, closest.y); //<>//
             if(enemies.size() <= 0) rays.remove(i);
+            if(closest.x < 0 || closest.y < 0 || closest.x > width || closest.y > width) rays.remove(i);
             println(ray.x,ray.y);
             println(closest.x,closest.y);
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
@@ -437,6 +438,7 @@ void draw() {
       if (turrets.size() >= 1) for (int i = 0; i < turrets.size(); i++) {
         Turret turret = turrets.get(i);
         if (menu.x>turret.x-50 && menu.x<turret.x+50 && menu.y+120>turret.y-50 && menu.y+120<turret.y+50) valid = false;
+        
       }
       if (traps.size() >= 1) for (int i = 0; i < traps.size(); i++) {
         Trap turret = traps.get(i);
