@@ -46,8 +46,13 @@ class Ray {
     imageMode(CENTER);
     image(bullet,x,y);
   }
-  void newTarget(float x, float y){
-    angle = Direction.calcAngle(this.x, this.y, x, y);
+  boolean newTarget(float x, float y){
+    if(x > width || x < 0 || y > height || y < 0){
+      return false;
+    } else {
+      angle = Direction.calcAngle(this.x, this.y, x, y);
+      return true;
+    }
   }
   void track(Enemy target){
     tracked = target;

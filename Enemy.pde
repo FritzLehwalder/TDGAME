@@ -50,7 +50,7 @@ class Enemy {
     } else {
       if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
     }
-    return bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2;
+    return bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2 && !bullet.type.equals("boss");
   }
   Boolean checkTrap(Trap bullet){
     if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2){

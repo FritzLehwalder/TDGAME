@@ -106,13 +106,9 @@ void draw() {
             ray.noDmg = true; //<>//
             if (ray.teslaCount == 4) rays.remove(i); //<>//
             ray.teslaCount+=1; //<>//
+            if(closestId == 0) rays.remove(i);
             ray.newTarget(closest.x, closest.y); //<>//
-            if(enemies.size() <= 0) rays.remove(i);
-            if(closest.x < 0 || closest.y < 0 || closest.x > width || closest.y > width) rays.remove(i);
-            println(ray.x,ray.y);
-            println(closest.x,closest.y);
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
-            if(enemies.size() == 0) rays.remove(i);
           } else if(ray.type.equals("laser")){
           } else {
             rays.remove(i);
@@ -648,7 +644,6 @@ void mousePressed() {
   } else {
     if (menu.active && mouseButton == LEFT) {
       menu.click = true;
-      println(menu.click);
     } else if (mouseButton == LEFT && player.readyToFire) {
       rays.add(new Ray(player.x, player.y, Direction.calcAngle(player.x, player.y, mouseX, mouseY), 10, player.damage, "player"));
       player.readyToFire = false;

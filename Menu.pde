@@ -91,7 +91,6 @@ class Menu {
     
     }
     if(active) click = false;
-    if(queue != null) println(queue);
   }
   void active(boolean active){
     this.active = active;
