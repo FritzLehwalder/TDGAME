@@ -1,4 +1,3 @@
-
 ArrayList<Ray> rays;
 ArrayList<Turret> turrets;
 ArrayList<Enemy> enemies;
@@ -100,14 +99,13 @@ void draw() {
       }
       if (enemies.size() >= 1) for (int j = 0; j < enemies.size(); j++) { 
         Enemy enemy = enemies.get(j);
-        if (enemy.checkRay(ray, ray.noDmg) && i < rays.size() && !enemy.boss) {
+        if (enemy.checkRay(ray, ray.noDmg) && i < rays.size()) {
           if(ray.type.equals("tesla")) {
             if(enemies.get(closestId) != null) closest = enemies.get(closestId);
             ray.noDmg = true; //<>//
-            if (ray.teslaCount == 4) rays.remove(i); //<>//
-            ray.teslaCount+=1; //<>//
-            if(closestId == 0) rays.remove(i);
-            ray.newTarget(closest.x, closest.y); //<>//
+            println(enemies.size());
+            if (ray.teslaCount == 4 || enemies.size() <= 1 || !ray.newTarget(closest.x, closest.y)) rays.remove(i); //<>//
+            ray.teslaCount+=1; //<>// //<>//
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
           } else if(ray.type.equals("laser")){
           } else {
