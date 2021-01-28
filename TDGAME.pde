@@ -30,6 +30,8 @@ Boolean disableOverlapping;
 int activeKey;
 Boolean paused;
 boolean a;
+int laserCount;
+boolean maxLaser;
 void setup() {
   enemyId = 0;
   instaKill = false;
@@ -62,6 +64,8 @@ void setup() {
   paused = false;
   a = false;
   disableOverlapping = false;
+  laserCount = 0;
+  maxLaser = false;
 }
 void draw() {
   imageMode(CENTER);
@@ -465,8 +469,13 @@ void draw() {
         turrets.add(new Turret(menu.x, menu.y+120, 80, menu.queue));
         money-=1000;
       } else if (menu.queue == "laser" && money >= 2500 && valid) {
-        turrets.add(new Turret(menu.x, menu.y+120, 9999, menu.queue));
-        money-=2500;
+        if(laserCount < 4){
+          turrets.add(new Turret(menu.x, menu.y+120, 9999, menu.queue));
+          money-=2500;
+          laserCount += 1;
+        } else {
+          maxLaser = true;
+        }
       } else if (menu.queue == "bomb" && money >= 2000 && valid) {
         turrets.add(new Turret(menu.x, menu.y+120, 100, menu.queue));
         money-=2000;
@@ -512,6 +521,9 @@ void draw() {
   }
   if(invincible){
     text("invincible", width/2, 30);
+  }
+  if(maxLaser){
+    text("Max lasers.", width/4+width/8, 15);
   }
 }
 void keyPressed() {

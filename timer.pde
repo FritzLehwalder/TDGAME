@@ -2,6 +2,7 @@ class Timer {
    
   int savedTime; // When Timer started
   int totalTime; // How long Timer should last
+  int passedTime;
 
   Timer(int tempTotalTime) {
     totalTime = tempTotalTime;
@@ -18,6 +19,7 @@ class Timer {
   boolean isFinished() { 
     // Check how much time has passed
     int passedTime = millis()- savedTime;
+    this.passedTime = passedTime;
     if (passedTime > totalTime) {
       return true;
     } else {
