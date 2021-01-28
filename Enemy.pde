@@ -46,7 +46,7 @@ class Enemy {
   }
   Boolean checkRay(Ray bullet, Boolean canceler){
     if(bullet.type.equals("laser")){
-      if(bullet.x>x-w*2 && bullet.x<x+w*2 && bullet.y>y-h*2 && bullet.y<y+h*2) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
+      if(bullet.x>x-w*2 && bullet.x<x+w && bullet.y>y-h && bullet.y<y+h) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
     } else {
       if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
     }
