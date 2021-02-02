@@ -34,7 +34,7 @@ class Turret {
       fireTimer.totalTime = 2000;
     } else if(type.equals("laser")){
       turretimg = loadImage("./data/laser.png");
-      fireTimer.totalTime = 10500;
+      fireTimer.totalTime = (int)random(12500,20000);
     } else if(type.equals("bomb")){ // stun movement around bomb crater
       turretimg = loadImage("./data/bomb.png");
       fireTimer.totalTime = 10500;

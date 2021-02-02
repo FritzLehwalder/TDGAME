@@ -1,13 +1,13 @@
 class Ray {
-  float x, y, speed; //<>//
-  int dmg, teslaCount; //<>//
-  PImage bullet; //<>//
-  double angle; //<>//
-  Boolean hidden; //<>//
-  Boolean tracking; //<>//
-  Boolean purge, noDmg; //<>//
-  String type; //<>//
-  Enemy tracked; //<>//
+  float x, y, speed; //<>// //<>//
+  int dmg, teslaCount; //<>// //<>//
+  PImage bullet; //<>// //<>//
+  double angle; //<>// //<>//
+  Boolean hidden; //<>// //<>//
+  Boolean tracking; //<>// //<>//
+  Boolean purge, noDmg; //<>// //<>//
+  String type; //<>// //<>//
+  Enemy tracked; //<>// //<>//
   Ray(float x, float y, double angle, float speed, int dmg, String type){
     noDmg = false;
     teslaCount = 0;

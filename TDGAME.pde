@@ -6,6 +6,7 @@ Timer EnemyTimer;
 Timer LevelTimer;
 Timer PrepTimer;
 Timer BossShotTimer;
+Timer BossSpawnTimer;
 int enemyId;
 int level;
 int startingHP;
@@ -66,6 +67,7 @@ void setup() {
   disableOverlapping = false;
   laserCount = 0;
   maxLaser = false;
+  BossSpawnTimer = new Timer(4500);
 }
 void draw() {
   imageMode(CENTER);
@@ -106,11 +108,11 @@ void draw() {
         if (enemy.checkRay(ray, ray.noDmg) && i < rays.size()) {
           if(ray.type.equals("tesla")) {
             if(enemies.get(closestId) != null) closest = enemies.get(closestId);
-            ray.noDmg = true; //<>//
+            ray.noDmg = true;
             println(enemies.size());
-            if (ray.teslaCount == 4 || enemies.size() <= 1 || !ray.newTarget(closest.x, closest.y)) rays.remove(i); //<>//
-            ray.teslaCount+=1; //<>// //<>//
-            if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false; //<>//
+            if (ray.teslaCount == 4 || enemies.size() <= 1 || !ray.newTarget(closest.x, closest.y)) rays.remove(i);
+            ray.teslaCount+=1; //<>//
+            if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false;
           } else if(ray.type.equals("laser")){
           } else {
             rays.remove(i);
@@ -291,39 +293,24 @@ void draw() {
         prep = false;
         temp2 = false;
         spawn = true;
-        int rand = (int)random(0, 3);
-        float tx = random(0, 1000);
-        float ty = -50;
-        switch (rand) {
-        case 0:
-          tx = random(0, 1000);
-          ty = -50;
-          break;
-        case 1:
-          ty = random(0, 1000);
-          tx = 1050;
-          break;
-        case 2:
-          tx = random(0, 1000);
-          ty = 1050;
-          break;
-        case 3:
-          ty = random(0, 1000);
-          tx = -50;
-          break;
-        }
         switch(level) {
         case 5:
-          enemies.add(new Enemy(tx, ty, 5500, 1, true));
+          spawnBoss(5500);
           break;
         case 10:
-          enemies.add(new Enemy(tx, ty, 15000, 1, true));
+          spawnBoss(15000);
           break;
         case 15:
-          enemies.add(new Enemy(tx, ty, 24500, 1, true));
+          spawnBoss(22000);
           break;
         case 20:
-          enemies.add(new Enemy(tx, ty, 30000, 1, true));
+          spawnBoss(33000);
+          break;
+        case 25:
+          spawnBoss(44000);
+          break;
+        case 30:
+          spawnBoss(55000);
           break;
         }
       }
@@ -432,6 +419,56 @@ void draw() {
       EnemyTimer.totalTime = 1250;
       totalEnemies = 8;
       startingHP = 625;
+      break;
+    case 21:
+      EnemyTimer.totalTime = 1250;
+      totalEnemies = 8;
+      startingHP = 680;
+      break;
+    case 22:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 9;
+      startingHP = 680;
+      break;
+    case 23:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 9;
+      startingHP = 710;
+      break;
+    case 24:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 9;
+      startingHP = 750;
+      break;
+    case 25:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 10;
+      startingHP = 750;
+      break;
+    case 26:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 10;
+      startingHP = 780;
+      break;
+    case 27:
+      EnemyTimer.totalTime = 1100;
+      totalEnemies = 10;
+      startingHP = 800;
+      break;
+    case 28:
+      EnemyTimer.totalTime = 1000;
+      totalEnemies = 10;
+      startingHP = 800;
+      break;
+    case 29:
+      EnemyTimer.totalTime = 1000;
+      totalEnemies = 10;
+      startingHP = 810;
+      break;
+    case 30:
+      EnemyTimer.totalTime = 1000;
+      totalEnemies = 11;
+      startingHP = 810;
       break;
     }
     menu.display();
@@ -670,5 +707,41 @@ void mouseReleased() {
   }
   if (mouseButton == LEFT && menu.active) {
     menu.click = false;
+  }
+}
+void spawnBoss(int hp){
+  int rand = (int)random(0, 3);
+  float tx = random(0, 1000);
+  float ty = -50;
+  switch (rand) {
+        case 0:
+          tx = random(0, 1000);
+          ty = -50;
+          break;
+        case 1:
+          ty = random(0, 1000);
+          tx = 1050;
+          break;
+        case 2:
+          tx = random(0, 1000);
+          ty = 1050;
+          break;
+        case 3:
+          ty = random(0, 1000);
+          tx = -50;
+          break;
+  }
+  BossSpawnTimer.start();
+  boolean temper = true;
+  boolean spawned = false;
+  while(temper) {
+    if(BossSpawnTimer.isFinished()){
+      temper = false;
+      spawned = true;
+    }wd
+    if(spawned){
+      enemies.add(new Enemy(tx, ty, hp, 1, true));
+      spawned = false;
+    }
   }
 }
