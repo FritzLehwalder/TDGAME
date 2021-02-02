@@ -738,7 +738,7 @@ void spawnBoss(int hp){
     if(BossSpawnTimer.isFinished()){
       temper = false;
       spawned = true;
-    }wd
+    }
     if(spawned){
       enemies.add(new Enemy(tx, ty, hp, 1, true));
       spawned = false;
