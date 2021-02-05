@@ -21,23 +21,26 @@ class Turret {
     maxhp = hp;
     if (type.equals("turretEasy")){
       turretimg = loadImage("./data/turret.png");
+      fireTimer.totalTime = (int)random(900,1100);
     } else if(type.equals("turretHard")){
       turretimg = loadImage("./data/turretHard.png");
       hp = 2000;
+      fireTimer.totalTime = (int)random(900,1100);
     } else if(type.equals("turretShotgun")){
       turretimg = loadImage("./data/turretShotgun.png");
+      fireTimer.totalTime = (int)random(900,1100);
     } else if(type.equals("turretMachine")) {
       fireTimer.totalTime = 150;
       turretimg = loadImage("./data/turretMachine.png");
     } else if(type.equals("tesla")){
       turretimg = loadImage("./data/tesla.png");
-      fireTimer.totalTime = 2000;
+      fireTimer.totalTime = (int)random(1500,2500);
     } else if(type.equals("laser")){
       turretimg = loadImage("./data/laser.png");
       fireTimer.totalTime = (int)random(12500,20000);
     } else if(type.equals("bomb")){ // stun movement around bomb crater
       turretimg = loadImage("./data/bomb.png");
-      fireTimer.totalTime = 10500;
+      fireTimer.totalTime = (int)random(6000,8000);
     }
   }
   void update() {

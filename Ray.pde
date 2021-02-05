@@ -8,7 +8,9 @@ class Ray {
   Boolean purge, noDmg; //<>// //<>//
   String type; //<>// //<>//
   Enemy tracked; //<>// //<>//
+  Timer bombTimer;
   Ray(float x, float y, double angle, float speed, int dmg, String type){
+    bombTimer = new Timer(3000);
     noDmg = false;
     teslaCount = 0;
     this.type = type;
@@ -27,6 +29,11 @@ class Ray {
     if(type.equals("laser")){
       bullet = loadImage("./data/laserRay.png");
       bullet.resize(100,100);
+    }
+    if(type.equals("bomb")){
+      bullet = loadImage("./data/bombRay.png");
+      bullet.resize(150/2,150/2);
+      bombTimer.start();
     }
     if(type.equals("boss")) bullet = loadImage("./data/enemyBullet.png");
     hidden = false;

@@ -33,6 +33,17 @@ Boolean paused;
 boolean a;
 int laserCount;
 boolean maxLaser;
+float tempBossY;
+float tempBossX;
+int tempBosshp;
+boolean bossTimerActive;
+PImage explosionTexture;
+Timer explosionTimer;
+boolean explosionActive;
+float tempExplosionY;
+float tempExplosionX;
+Ray tempRemoveRay;
+boolean boolRemoveRay;
 void setup() {
   enemyId = 0;
   instaKill = false;
@@ -68,6 +79,16 @@ void setup() {
   laserCount = 0;
   maxLaser = false;
   BossSpawnTimer = new Timer(4500);
+  tempBossY = 0;
+  tempBossX = 0;
+  tempBosshp = 5500;
+  bossTimerActive = false;
+  explosionTimer = new Timer(300);
+  explosionTexture = loadImage("./data/explosion.png");
+  explosionActive = false;
+  tempExplosionY = 0;
+  tempExplosionX = 0;
+  boolRemoveRay = false;
 }
 void draw() {
   imageMode(CENTER);
@@ -79,6 +100,16 @@ void draw() {
   image(background, width/2, height/2);
   player.update();
   if (!paused) {
+    if(BossSpawnTimer.isFinished() && bossTimerActive){
+      enemies.add(new Enemy(tempBossY, tempBossX, tempBosshp, 1, true));
+      bossTimerActive = false;
+    }
+    if(!explosionTimer.isFinished() && explosionActive){
+      image(explosionTexture,tempExplosionY,tempExplosionX);
+    }
+    if(explosionTimer.isFinished() && explosionActive){
+      explosionActive = false;
+    }
     if (rays.size() >= 1) for (int i = 0; i < rays.size(); i++) { 
       Ray ray = rays.get(i);
       if (ray.dmg <= 5) {
@@ -113,6 +144,7 @@ void draw() {
             if (ray.teslaCount == 4 || enemies.size() <= 1 || !ray.newTarget(closest.x, closest.y)) rays.remove(i);
             ray.teslaCount+=1; //<>//
             if(ray.x+25 > enemy.x || ray.x-25 < enemy.x && ray.y+25 > enemy.y || ray.y-25 < enemy.y) ray.noDmg = false;
+          } else if(ray.type.equals("bomb")){
           } else if(ray.type.equals("laser")){
           } else {
             rays.remove(i);
@@ -122,6 +154,125 @@ void draw() {
             money+=50;
           }
         }
+        if(ray.type.equals("bomb")){
+            println(ray.bombTimer.passedTime);
+            if(ray.bombTimer.passedTime < 100){
+              ray.bullet.resize(140/2,140/2);
+              ray.speed = 2.9;
+            }else if(ray.bombTimer.passedTime < 200 && ray.bombTimer.passedTime > 100){
+              ray.bullet.resize(130/2,130/2);
+              ray.speed = 2.8;
+            }else if(ray.bombTimer.passedTime < 300 && ray.bombTimer.passedTime > 200){
+              ray.bullet.resize(120/2,120/2);
+              ray.speed = 2.7;
+            }else if(ray.bombTimer.passedTime < 400 && ray.bombTimer.passedTime > 300){
+              ray.bullet.resize(110/2,110/2);
+              ray.speed = 2.6;
+            }else if(ray.bombTimer.passedTime < 500 && ray.bombTimer.passedTime > 400){
+              ray.bullet.resize(100/2,100/2);
+              ray.speed = 2.5;
+            }else if(ray.bombTimer.passedTime < 600 && ray.bombTimer.passedTime > 500){
+              ray.bullet.resize(90/2,90/2);
+              ray.speed = 2.4;
+            }else if(ray.bombTimer.passedTime < 700 && ray.bombTimer.passedTime > 600){
+              ray.bullet.resize(80/2,80/2);
+              ray.speed = 2.3;
+            }else if(ray.bombTimer.passedTime < 800 && ray.bombTimer.passedTime > 700){
+              ray.bullet.resize(70/2,70/2);
+              ray.speed = 2.2;
+            }else if(ray.bombTimer.passedTime < 900 && ray.bombTimer.passedTime > 800){
+              ray.bullet.resize(60/2,60/2);
+              ray.speed = 2.1;
+            }else if(ray.bombTimer.passedTime < 1000 && ray.bombTimer.passedTime > 900){
+              ray.bullet.resize(50/2,50/2);
+              ray.speed = 2.0;
+            }else if(ray.bombTimer.passedTime < 1100 && ray.bombTimer.passedTime > 1000){
+              ray.bullet.resize(40/2,40/2);
+              ray.speed = 1.9;
+            }else if(ray.bombTimer.passedTime < 1200 && ray.bombTimer.passedTime > 1100){
+              ray.bullet.resize(30/2,30/2);
+              ray.speed = 1.8;
+            }else if(ray.bombTimer.passedTime < 1300 && ray.bombTimer.passedTime > 1200){
+              ray.bullet.resize(20/2,20/2);
+              ray.speed = 1.7;
+            }else if(ray.bombTimer.passedTime < 1400 && ray.bombTimer.passedTime > 1300){
+              ray.bullet.resize(15/2,15/2);
+              ray.speed  = 1.6;
+            }else if(ray.bombTimer.passedTime < 1500 && ray.bombTimer.passedTime > 1400){
+              ray.bullet.resize(10/2,10/2);
+              ray.speed = 1.5;
+            }else if(ray.bombTimer.passedTime < 1600 && ray.bombTimer.passedTime > 1500){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(15/2,15/2);
+              ray.speed = 1.6;
+            }else if(ray.bombTimer.passedTime < 1700 && ray.bombTimer.passedTime > 1600){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(20/2,20/2);
+              ray.speed = 1.7;
+            }else if(ray.bombTimer.passedTime < 1800 && ray.bombTimer.passedTime > 1700){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(30/2,30/2);
+              ray.speed = 1.8;
+            }else if(ray.bombTimer.passedTime < 1900 && ray.bombTimer.passedTime > 1800){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(40/2,40/2);
+              ray.speed = 1.9;
+            }else if(ray.bombTimer.passedTime < 2000 && ray.bombTimer.passedTime > 1900){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(50/2,50/2);
+              ray.speed = 2;
+            }else if(ray.bombTimer.passedTime < 2100 && ray.bombTimer.passedTime > 2000){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(60/2,60/2);
+              ray.speed = 2.1;
+            }else if(ray.bombTimer.passedTime < 2200 && ray.bombTimer.passedTime > 2100){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(70/2,70/2);
+              ray.speed = 2.2;
+            }else if(ray.bombTimer.passedTime < 2300 && ray.bombTimer.passedTime > 2200){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(80/2,80/2);
+              ray.speed = 2.3;
+            }else if(ray.bombTimer.passedTime < 2400 && ray.bombTimer.passedTime > 2300){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(90/2,90/2);
+              ray.speed = 2.4;
+            }else if(ray.bombTimer.passedTime < 2500 && ray.bombTimer.passedTime > 2400){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(100/2,100/2);
+              ray.speed = 2.5;
+            }else if(ray.bombTimer.passedTime < 2600 && ray.bombTimer.passedTime > 2500){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(110/2,110/2);
+              ray.speed = 2.6;
+            }else if(ray.bombTimer.passedTime < 2700 && ray.bombTimer.passedTime > 2600){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(120/2,120/2);
+              ray.speed = 2.7;
+            }else if(ray.bombTimer.passedTime < 2800 && ray.bombTimer.passedTime > 2700){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(130/2,130/2);
+              ray.speed = 2.8;
+            }else if(ray.bombTimer.passedTime < 2900 && ray.bombTimer.passedTime > 2800){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(140/2,140/2);
+              ray.speed = 2.9;
+            }else if(ray.bombTimer.passedTime < 3000 && ray.bombTimer.passedTime > 2900){
+              ray.bullet = loadImage("./data/bombRay.png");
+              ray.bullet.resize(150/2,150/2);
+              ray.speed = 3;
+            }else if(ray.bombTimer.isFinished()){
+              createExplosion(ray.y,ray.x);
+              if(dist(enemy.x, enemy.y, ray.x, ray.y)< 250) enemies.remove(enemy);
+              tempRemoveRay = ray;
+              boolRemoveRay = true;
+            }
+            println(ray.bombTimer.isFinished());
+        }
+      }
+      if(boolRemoveRay){
+        rays.remove(tempRemoveRay);
+        boolRemoveRay = false;
       }
       try {
         if (ray.x >= 1050 || ray.x <= -50 || ray.y >= 1050 || ray.y <= -50 && rays.get(i) != null) rays.remove(i); // off screen culling
@@ -184,6 +335,9 @@ void draw() {
             ray = rays.get(rays.indexOf(ray));
           } else if (turret.type.equals("laser")) {
             Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 20, turret.dmg, "laser");
+            rays.add(ray);
+          } else if (turret.type.equals("bomb")){
+            Ray ray = new Ray(turret.x, turret.y, Direction.calcAngle(turret.x, turret.y, turret.enemy.x, turret.enemy.y), 3, turret.dmg, "bomb");
             rays.add(ray);
           }
           turret.ready = false;
@@ -732,16 +886,14 @@ void spawnBoss(int hp){
           break;
   }
   BossSpawnTimer.start();
-  boolean temper = true;
-  boolean spawned = false;
-  while(temper) {
-    if(BossSpawnTimer.isFinished()){
-      temper = false;
-      spawned = true;
-    }
-    if(spawned){
-      enemies.add(new Enemy(tx, ty, hp, 1, true));
-      spawned = false;
-    }
-  }
+  bossTimerActive = true;
+  tempBossY = ty;
+  tempBossX = tx;
+  tempBosshp = hp;
+}
+void createExplosion(float x, float y){
+  tempExplosionY = y;
+  tempExplosionX = x;
+  explosionActive = true;
+  explosionTimer.start();
 }

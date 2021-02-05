@@ -45,8 +45,13 @@ class Enemy {
     if(hp > 0) text(hp, x, y+h/2+14, 5);
   }
   Boolean checkRay(Ray bullet, Boolean canceler){
+    if(bullet.type.equals("bomb")) return false;
     if(bullet.type.equals("laser")){
-      if(bullet.x>x-w*2 && bullet.x<x+w && bullet.y>y-h && bullet.y<y+h) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
+      if(bullet.x>x-w*2 && bullet.x<x+w && bullet.y>y-h && bullet.y<y+h) if(!canceler && !bullet.type.equals("boss")){
+        hp-=bullet.dmg;
+      } else if (this.boss = true){
+        hp-=bullet.dmg/8;
+      }
     } else {
       if(bullet.x>x-w/2 && bullet.x<x+w/2 && bullet.y>y-h/2 && bullet.y<y+h/2) if(!canceler && !bullet.type.equals("boss")) hp-=bullet.dmg;
     }
