@@ -5,7 +5,7 @@
 
 
 # UML Document 
-![UMLDocument](https://github.com/FritzLehwalder/TDGAME/blob/main/data/UMLDocument.png)
+![UMLDocument](https://github.com/FritzLehwalder/TDGAME/blob/main/data/TDGame%20Chart.png)
 ## (uml doc outdated to jan 2020)
 # GUI Mockup
 ![GUIMockup](https://github.com/HenryChristiansen/TDGAME/blob/main/data/GUIMockup.png)
