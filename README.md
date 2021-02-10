@@ -7,5 +7,5 @@
 ![UMLDocument](https://github.com/HenryChristiansen/TDGAME/blob/main/data/UMLDocument.png)
 # GUI Mockup
 ![GUIMockup](https://github.com/HenryChristiansen/TDGAME/blob/main/data/GUIMockup.png)
-# Images of Game
+# Image of Game
 ![GamePic](https://github.com/HenryChristiansen/TDGAME/blob/main/data/GamePic.PNG)
