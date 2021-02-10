@@ -6,7 +6,6 @@
 # UML Document
 ![UMLDocument](https://github.com/HenryChristainsen/TDGAME/blob/main/data/UMLDocument.png)
 # GUI Mockup
-![GUI Mockup](https://github.com/HenryChristainsen/TDGAME/blob/main/data/GUIMockup/png)
-## 1 Frame of 1000px by 1000px, no other frames of panels.
+![GUI Mockup](https://github.com/HenryChristainsen/TDGAME/blob/main/data/GUIMockup.png)
 # Images of Game
-![GamePic](https://github.com/HenryChristainsen/TDGAME/blob/main/data/GamePic/png)
+![GamePic](https://github.com/HenryChristainsen/TDGAME/blob/main/data/GamePic.png)
