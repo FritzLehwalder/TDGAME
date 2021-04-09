@@ -8,7 +8,7 @@
 ### Caleb Kirby (Coder)
 
 # UML Document
-![UMLDocument](https://github.com/HenryChristiansen/TDGAME/blob/main/data/TDGAME_UML_DOC.png)
+![UMLDocument](https://github.com/HenryChristiansen/TDGAME/blob/main/data/TDGame_UML_DOC.png)
 # GUI Mockup
 ![GUIMockup](https://github.com/HenryChristiansen/TDGAME/blob/main/data/GUIMockup.png)
 # Image of Game
