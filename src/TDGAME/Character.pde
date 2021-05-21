@@ -1,3 +1,4 @@
+import java.io.*;
 class Character {
   float x, y, w, h, velocityX, velocityY, speed;
   int hp, maxhp, shield, maxshield, damage;
@@ -17,7 +18,11 @@ class Character {
     maxshield = 100;
     velocityX = 0;
     velocityY = 0;
-    player = loadImage("./data/player.png");
+    try {
+      player = loadImage("./data/player.png");
+    } catch (NullPointerException e) {
+      e.printStackTrace();
+    }
     hidden = false;
     fireTimer = new Timer(500);
   }

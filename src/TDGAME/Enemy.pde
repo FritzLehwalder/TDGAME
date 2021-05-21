@@ -1,3 +1,4 @@
+import java.io.*;
 class Enemy {
   float x,y,w,h,speed;
   float maxhp;
@@ -16,8 +17,12 @@ class Enemy {
     maxhp = hp;
     maxspeed = speed;
     this.speed = speed;
-    img = loadImage("./data/enemy.png");
-    if(boss) img = loadImage("./data/boss.png");
+    try {
+      img = loadImage("./data/enemy.png");
+      if(boss) img = loadImage("./data/boss.png");
+    } catch (NullPointerException e) {
+      e.printStackTrace();
+    }
   }
   void update(Character player){
     if(hp < maxhp && !boss) speed=maxspeed/(maxhp/hp);

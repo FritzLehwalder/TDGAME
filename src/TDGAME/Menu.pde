@@ -1,3 +1,4 @@
+import java.io.*;
 class Menu {
   Boolean active, click;
   String queue;
@@ -19,7 +20,11 @@ class Menu {
     active = false;
     click = false;
     queue = null;
-    menu = loadImage("./data/menu.png");
+    try {
+      menu = loadImage("./data/menu/png");
+    } catch (NullPointerException e) {
+      e.printStackTrace();
+    }
   }
   void display(){
     if(queue != null) queue = null;

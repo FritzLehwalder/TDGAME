@@ -1,4 +1,5 @@
 //powerups, lasergun turret, electric tesla turret (arcs between enemies), gun upgrade shooting (faster shooting, more damage), aoe bomb turret, upgrade damage on turrets, autosnap to close turrets/traps when building, pathfinding, walls
+import java.io.*;
 ArrayList<Ray> rays;
 ArrayList<Turret> turrets;
 ArrayList<Enemy> enemies;
@@ -29,7 +30,7 @@ Boolean temp2;
 int activeKey;
 Boolean paused;
 boolean a;
-void setup() {
+void setup(){
   instaKill = false;
   money = 0;
   rays = new ArrayList<Ray>();
@@ -43,9 +44,13 @@ void setup() {
   startingHP = 100;
   invincible = false;
   Gotham = createFont("./data/Gotham-Bold.otf", 40);
-  background = loadImage("./data/background2.png");
-  curs = loadImage("./data/cursor.png");
-  cursMenu = loadImage("./data/cursurMenu.png");
+  try {
+    background = loadImage("./data/background2.png");
+    curs = loadImage("./data/cursor.png");
+    cursMenu = loadImage("./data/cursurMenu.png");
+  } catch (NullPointerException e) {
+    e.printStackTrace();
+  }
   player = new Character(width/2, height/2, 4);
   size(1000, 1000);
   noStroke();

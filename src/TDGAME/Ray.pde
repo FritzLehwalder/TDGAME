@@ -1,3 +1,4 @@
+import java.io.*;
 class Ray {
   float x, y, speed;
   int dmg;
@@ -15,8 +16,12 @@ class Ray {
     tracking = false;
     tracked = null;
     this.dmg = dmg;
-    bullet = loadImage("./data/bullet.png");
-    if(dmg <= 5) bullet = loadImage("./data/enemyBullet.png");
+    try {
+      bullet = loadImage("./data/bullet.png");
+      if(dmg <= 5) bullet = loadImage("./data/enemyBullet.png");
+    } catch (NullPointerException e) {
+      e.printStackTrace();
+    }
     hidden = false;
     purge = false;
   }

@@ -1,3 +1,4 @@
+import java.io.*;
 class Trap {
   float x, y, w, h;
   int dmg, hp;
@@ -7,7 +8,11 @@ class Trap {
     this.y = y;
     this.dmg = dmg;
     this.hp = hp;
-    img = loadImage("./data/trap.png");
+    try {
+      img = loadImage("./data/trap.png");
+    } catch (NullPointerException e) {
+      e.printStackTrace();
+    }
     w = 50;
     h = 50;
   }

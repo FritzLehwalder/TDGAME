@@ -1,3 +1,4 @@
+import java.io.*;
 class Turret {
   float x, y, w, h;
   int dmg, hp, maxhp;
@@ -18,12 +19,16 @@ class Turret {
     hp = 1000;
     if(dmg == 100) hp = 2000;
     maxhp = hp;
-    if (dmg == 50) turretimg = loadImage("./data/turret.png");
-    if (dmg == 100) turretimg = loadImage("./data/turretHard.png");
-    if (dmg == 25) turretimg = loadImage("./data/turretShotgun.png");
-    if (dmg == 10) {
-      fireTimer.totalTime = 150;
-      turretimg = loadImage("./data/turretMachine.png");
+    try {
+      if (dmg == 50) turretimg = loadImage("./data/turret.png");
+      if (dmg == 100) turretimg = loadImage("./data/turretHard.png");
+      if (dmg == 25) turretimg = loadImage("./data/turretShotgun.png");
+      if (dmg == 10) {
+        fireTimer.totalTime = 150;
+        turretimg = loadImage("./data/turretMachine.png");
+      }
+    } catch (NullPointerException e) {
+      e.printStackTrace();
     }
   }
   void update() {
