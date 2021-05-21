@@ -1,6 +1,6 @@
 ![GameLogo](https://github.com/HenryChristiansen/TDGAME/blob/main/data/BANNER.png)
 # Instructions to Download and Run
-## Download the appropriate file for your computer. Decompress, go into the folder, run the application and enjoy the game.
+## Click one of the following links based on your computer system. Click the download button that appears on the right hand side of the screen. Decompress the zip file, go into the folder, run the application and enjoy the game.
 ### 64-bit Windows: [Windows64.zip](https://github.com/HenryChristiansen/TDGAME/blob/main/Executables/Windows64.zip)
 ### 32-bit Windows: [Windows32.zip](https://github.com/HenryChristiansen/TDGAME/blob/main/Executables/Windows32.zip)
 
