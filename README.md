@@ -11,6 +11,11 @@
 ### Enemies
 ### Projectiles
 ### Multiple levels
+## Year 2 Concepts
+### IO Exception Handling
+### Ternary Statements
+### Collections (lists)
+### Graphics 
 ## Group Members
 ### Henry Christiansen (Coder)
 ### Fritz Lehwalder (Coder)
